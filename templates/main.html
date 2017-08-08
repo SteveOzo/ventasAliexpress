@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  <div class="table-responsive">
+    <table class="table table-bordered">
+    <tr>
+      <th>Id</th>
+      <th>clientes</th>
+    </tr>
+    {% for cliente in clientes %}
+    <tr>
+      <td>{{ cliente.idCliente }}</td>
+      <td>{{ cliente.Nombre }}</td>
+    </tr>
+    {% end %}
+    </table>
+  </div>
+</div>
+{% end %}

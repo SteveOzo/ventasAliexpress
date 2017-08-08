@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% if error %}
+<h2 class="espaciado center-block">Error: {{ error }}</h2>
+{% end %}
+
+<form action="/" method="POST">
+  <div class="container formulario">
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-4">
+          <img src="{{ static_url("imagenes/spoofcorp.png") }}" class="logo center-block">
+        </div>
+      </div>
+
+      <div class="espaciado">
+      </div>
+
+      <div class="row">
+        <fieldset class="col-xs-10 col-xs-offset-1 borde">
+          <legend class="hidden-xs"><h3>Inicio de Sesion</h3></legend>
+
+          <form role="form" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-xs-12" for="usuario">
+                <h4>Usuario</h4>
+                <div class="col-xs-10 col-xs-offset-1">
+                  <input type="text" id="usuario" name="usuario" class="form-control Input">
+                </div>
+              </label>
+            </div>
+
+
+            <div class="form-group">
+              <label class="col-xs-12" for="password">
+                <h4>Password</h4>
+                <div class="col-xs-10 col-xs-offset-1">
+                  <input type="password" id="password" name="password" class="form-control Input">
+                </div>
+              </label>
+            </div>
+
+            <div class="form-group">
+              {% module xsrf_form_html() %}
+              <button type="submit" class="btn btn-primary center-block"> Ingresar </button>
+            </div>
+          </form>
+
+        </fieldset>
+      </div>
+
+  </div>
+</form>
+
+{% end %}
