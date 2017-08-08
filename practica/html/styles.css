@@ -1,0 +1,63 @@
+body{
+  background: url(fondo.jpg) no-repeat center center fixed;
+  -webkit-backgroud-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  color: rgb(17, 9, 19)
+}
+
+*{
+  align-items: center;
+}
+
+#parrafo1{
+  text-align: center;
+  text-justify: auto; /* auto = algoritmo de justificacion*/
+}
+
+#cabecera, #navegacion, #seccion, #columna, #pie{
+  background: red;
+  border: 2px;
+  /*box-shadow: 10px 10px 5px red;*/
+  border-radius: 25px;
+  margin: 5px;
+}
+
+#mipagina{
+  width: 100%;
+  text-align: center;
+}
+
+#cabecera{
+  height: 100px;
+
+}
+
+#navegacion{
+  height: 75px;
+
+}
+
+#seccion{
+  width: 69%;
+  float: left;
+  margin: 5px;
+}
+
+#columna{
+  width: 29%;
+  float: right;
+}
+
+#pie{
+  clear: both;
+}
+
+/*Responsive Design*/
+
+@media screen and (max-width 400px)  {
+  /* Redimensionar pantallas de menor a 400px*/
+  #seccion,#columna{
+    width: 100%;
+  }
+}
