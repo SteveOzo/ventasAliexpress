@@ -3,19 +3,23 @@
 {% block body %}
 <div class="container">
   <div class="table-responsive">
-    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-open"></span> Nueva Venta</a>
-    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-open"></span> Nueva Venta</a>
+    <a href="#" class="btn btn-default"> Nueva Venta</a>
+    <a href="#" class="btn btn-default"> Nueva Cliente</a>
     <br>
     <br>
     <table class="table table-bordered">
     <tr>
-      <th>Id</th>
-      <th>clientes</th>
+      <th>Descripcion</th>
+      <th>Enlace</th>
+      <th>Ultima Ubicacion</th>
+      <th>Tiempo Restante de Proteccion</th>
     </tr>
-    {% for cliente in clientes %}
+    {% for producto in productos %}
     <tr>
-      <td>{{ cliente.idCliente }}</td>
-      <td>{{ cliente.Nombre }}</td>
+      <td>{{ producto.Descripcion }}</td>
+      <td>{{ producto.Enlace }}</td>
+      <td>{{ producto.UltimaUbicacion }}</td>
+      <td>{{ producto.FechaEnvio }}</td>
     </tr>
     {% end %}
     </table>

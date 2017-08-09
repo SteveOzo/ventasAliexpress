@@ -19,13 +19,11 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", HomeHandler),
-            #(r"/archive", ArchiveHandler),
-            #(r"/feed", FeedHandler),
-            #(r"/entry/([^/]+)", EntryHandler),
-            #(r"/compose", ComposeHandler),
-            #(r"/auth/create", AuthCreateHandler),
-            #(r"/auth/login", AuthLoginHandler),
             (r"/logout", LogoutHandler),
+            (r"/main/ventas", VentasHandler),
+            (r"/main/productos", ProductosHandler),
+            (r"/main/clientes", ClientesHandler),
+            (r"/main/contabilidad", ContabilidadHandler),
             (r"/main", MainHandler)
         ]
 
@@ -74,16 +72,38 @@ class HomeHandler(BaseHandler):
         else:
             self.render("index.html", error="incorrect password", menu=None)
 
-#class EntryModule(tornado.web.UIModule):
-#    def render(self, entry):
-#        return self.render_string("modules/entry.html", entry=entry)
-
-
 class MainHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
+        productos=self.db.query("SELECT * FROM Productos")
+        self.render("main.html", menu=True, productos=productos)
+
+
+class VentasHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        ventas=self.db.query("SELECT * FROM Ventas")
+        self.render("ventas.html", menu=True, ventas=ventas)
+
+class ClientesHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
         clientes=self.db.query("SELECT * FROM Clientes")
-        self.render("main.html", menu=True, clientes=clientes)
+        self.render("clientes.html", menu=True, clientes=clientes)
+
+class ProductosHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        productos=self.db.query("SELECT * FROM Productos")
+        self.render("clientes.html", menu=True, productos=productos)
+
+
+class ContabilidadHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        ventas=self.db.query("SELECT * FROM Ventas")
+        self.render("contabilidad.html", menu=True, ventas=ventas)
+
 
 
 class LogoutHandler(BaseHandler):
