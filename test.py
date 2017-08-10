@@ -24,6 +24,8 @@ class Application(tornado.web.Application):
             (r"/main/productos", ProductosHandler),
             (r"/main/clientes", ClientesHandler),
             (r"/main/contabilidad", ContabilidadHandler),
+            (r"/main/nuevaventa", NewSellHandler),
+            (r"/main/nuevocliente", NewClientHandler),
             (r"/main", MainHandler)
         ]
 
@@ -105,6 +107,25 @@ class ContabilidadHandler(BaseHandler):
         self.render("contabilidad.html", menu=True, ventas=ventas)
 
 
+class NewClientHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render("nuevocliente.html", menu=True, message=None)
+
+    @tornado.web.authenticated
+    def post(self):
+        nombre = self.get_argument("nombre")
+        telefono = self.get_argument("telefono")
+        facebook = self.get_argument("facebook")
+        self.db.execute(
+                        "INSERT INTO Clientes (Nombre, Telefono, Facebook) VALUES (%s,%s,%s)",
+                        nombre, telefono, facebook)
+        self.render("nuevocliente.html", menu=True, message="Usuario Ingresado Con Exito")
+
+class NewSellHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render("nuevaventa.html", menu=True)
 
 class LogoutHandler(BaseHandler):
     def get(self):
