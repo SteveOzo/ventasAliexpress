@@ -19,13 +19,13 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", HomeHandler),
-            #(r"/archive", ArchiveHandler),
-            #(r"/feed", FeedHandler),
-            #(r"/entry/([^/]+)", EntryHandler),
-            #(r"/compose", ComposeHandler),
-            #(r"/auth/create", AuthCreateHandler),
-            #(r"/auth/login", AuthLoginHandler),
             (r"/logout", LogoutHandler),
+            (r"/main/ventas", VentasHandler),
+            (r"/main/productos", ProductosHandler),
+            (r"/main/clientes", ClientesHandler),
+            (r"/main/contabilidad", ContabilidadHandler),
+            (r"/main/nuevaventa", NewSellHandler),
+            (r"/main/nuevocliente", NewClientHandler),
             (r"/main", MainHandler)
         ]
 
@@ -74,17 +74,58 @@ class HomeHandler(BaseHandler):
         else:
             self.render("index.html", error="incorrect password", menu=None)
 
-#class EntryModule(tornado.web.UIModule):
-#    def render(self, entry):
-#        return self.render_string("modules/entry.html", entry=entry)
-
-
 class MainHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        clientes=self.db.query("SELECT * FROM Clientes")
-        self.render("main.html", menu=True, clientes=clientes)
+        productos=self.db.query("SELECT * FROM Productos")
+        self.render("main.html", menu=True, productos=productos)
 
+
+class VentasHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        ventas=self.db.query("SELECT * FROM Ventas")
+        self.render("ventas.html", menu=True, ventas=ventas)
+
+class ClientesHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        clientes=self.db.query("SELECT * FROM Clientes")
+        self.render("clientes.html", menu=True, clientes=clientes)
+
+class ProductosHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        productos=self.db.query("SELECT * FROM Productos")
+        self.render("clientes.html", menu=True, productos=productos)
+
+
+class ContabilidadHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        ventas=self.db.query("SELECT * FROM Ventas")
+        self.render("contabilidad.html", menu=True, ventas=ventas)
+
+
+class NewClientHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render("nuevocliente.html", menu=True, message=None)
+
+    @tornado.web.authenticated
+    def post(self):
+        nombre = self.get_argument("nombre")
+        telefono = self.get_argument("telefono")
+        facebook = self.get_argument("facebook")
+        self.db.execute(
+                        "INSERT INTO Clientes (Nombre, Telefono, Facebook) VALUES (%s,%s,%s)",
+                        nombre, telefono, facebook)
+        self.render("nuevocliente.html", menu=True, message="Usuario Ingresado Con Exito")
+
+class NewSellHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render("nuevaventa.html", menu=True)
 
 class LogoutHandler(BaseHandler):
     def get(self):

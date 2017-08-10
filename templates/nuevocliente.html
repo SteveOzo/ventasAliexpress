@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+
+{% if message %}
+<h2 class="espaciado center-block">{{ message }}</h2>
+{% end %}
+
+<form action="/main/nuevocliente" method="POST">
+  <div class="container nuevo">
+<div class="espaciado">
+</div>
+
+<div class="row">
+  <fieldset class="col-xs-10 col-xs-offset-1 borde">
+    <legend class="hidden-xs"><h3>Registro de Nuevo CLiente</h3></legend>
+
+    <form role="form" class="form-horizontal">
+      <div class="form-group">
+        <label class="col-xs-2"><h4>Nombre</h4></label>
+
+          <div class="col-xs-offset-2">
+            <input type="text" id="nombre" name="nombre" class="form-control Input">
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-2"><h4>Telefono</h4></label>
+          <div class="col-xs-offset-2">
+            <input type="text" id="telefono" name="telefono" class="form-control Input">
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-2"><h4>Facebook</h4></label>
+          <div class="col-xs-offset-2">
+            <input type="text" id="facebook" name="facebook" class="form-control Input">
+          </div>
+      </div>
+
+      <div class="form-group">
+        {% module xsrf_form_html() %}
+        <button type="submit" class="btn btn-primary center-block"> Guardar </button>
+      </div>
+
+    </form>
+</fieldset>
+</div>
+</div>
+</form>
+{% end %}
