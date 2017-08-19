@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+
+<div class="desplazable">
+    <fieldset class="col-xs-10 col-xs-offset-1 borde">
+  <legend><h3>Total Actual</h3></legend>
+    <legend><h4>Total Aliexpress: </h4><span id="txtAli" name="txtAli" class="texto">0</span></legend>
+  <legend><h4>Total A Pagar: </h4><span id="txtPagar" class="texto">0</span></legend>
+    <legend><h4>Cantidad de Articulos: </h4><span id="txtCantidad" class="texto">1</span></legend>
+</fieldset>
+
+</div>
+
+
+<form action="/main/nuevaventa" method="POST">
+  <div class="container nuevo">
+
+<div class="espaciado">
+</div>
+
+
+<div class="row">
+  <fieldset class="col-xs-10 col-xs-offset-1 borde">
+    <legend class="hidden-xs"><h3>Realizar Nueva Venta</h3></legend>
+
+    <form role="form" class="form-horizontal">
+      <div class="container-fluid">
+        <div class="pull-left col-xs-offset-1">
+        <label><h4>Nombre</h4></label>
+            <select id="selector" name="selector" class="selectpicker" data-live-search="true">
+                {% for cliente in clientes %}
+                <option value="{{ cliente.Nombre }}">{{ cliente.Nombre }}</option>
+                {% end %}
+              </select>
+
+            </div>
+
+
+            <div class="pull-right col-xs-6">
+              <label class=""><h4>Tasa de Calculo</h4></label>
+              <select class="selectpicker" id="tasa" name="tasa">
+                {% for tasa in tasas %}
+                <option>{{ tasa.TasaSteve }}</option>
+                {% end %}
+              </select>
+          </div>
+      </div>
+
+<div id="contenedorproductos">
+
+<div class="row" id="elemento0">
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-8 col-sm-8 col-lg-8">
+
+            <legend class="hidden-xs"><h4>Producto</h4></legend>
+
+              <div class="container-fluid">
+                <label class="col-xs-2 col-sm-2 col-lg-2"><h4>Descripcion</h4></label>
+                  <div class="col-xs-10 col-sm-10 col-lg-10">
+                    <input type="text" id="descripcion0" name="descripcion" class="form-control Input" required="true">
+                  </div>
+              </div>
+
+              <div class="container-fluid">
+                <label class="col-xs-2 col-sm-2 col-lg-2"><h4>Enlace</h4></label>
+                  <div class="col-xs-10 col-sm-10 col-lg-10">
+                    <input type="text" id="enlace0" name="enlace" class="form-control Input" required="true">
+                  </div>
+              </div>
+
+              <div class="container-fluid">
+                <label class="col-xs-2 col-sm-2 col-lg-2"><h4>Tags</h4></label>
+                  <div class="col-xs-10 col-sm-10 col-lg-10">
+                    <input type="text" id="tag0" name="tags" class="form-control Input" required="true">
+                  </div>
+              </div>
+
+              <div class="container-fluid">
+                <label class="col-xs-2 col-sm-2 col-lg-2"><h4>Precio Aliexpress</h4></label>
+                  <div class="col-xs-10 col-sm-10 col-lg-10">
+                    <input type="text" id="precioali0" name="precioali" class="form-control Input" required="true" value="0" onkeypress="return valida(event)">
+                  </div>
+              </div>
+
+              <div class="container-fluid">
+                <label class="col-xs-2 col-sm-2 col-lg-2"><h4>Precio Final</h4></label>
+                  <div class="col-xs-10 col-sm-10 col-lg-10">
+                    <input type="text" id="preciofinal0" name="preciofinal" class="form-control Input" readonly="true" required="true" value="0">
+                  </div>
+              </div>
+
+          </div>
+          <div id="imagen0" name="imagen" class="col-xs-4 col-sm-4 col-lg-4">
+            <legend class="hidden-xs"><h4>Imagen</h4></legend>
+
+            <section>
+            <img id="imeg0">
+            <input id="cod640" name="cod64" type="hidden" value="">
+            </section>
+
+          </div>
+        </div>
+
+      </div>
+  <button type="button" id="remover0" class="btn btn-danger center-block"> Eliminar </button>
+</div>
+
+</div>
+
+<div class="form-group">
+  <button type="button" id="anadir" class="btn btn-primary center-block"> Añadir </button>
+  {% module xsrf_form_html() %}
+  <button type="submit" class="btn btn-primary center-block"> Guardar </button>
+
+</div>
+
+    </form>
+</fieldset>
+</div>
+</div>
+</form>
+
+
+
+<script>
+function valida(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+
+    //Tecla de retroceso para borrar, siempre la permite
+    if (tecla==8){
+        return true;
+    }
+
+    // Patron de entrada, en este caso solo acepta numeros
+    patron =/[0-9-.]/;
+    tecla_final = String.fromCharCode(tecla);
+    return patron.test(tecla_final);
+}
+</script>
+
+<script src="{{ static_url("bootstrapjs/jquery.min.js") }}"></script>
+<script src="{{ static_url("bootstrapjs/bootstrap.min.js") }}"></script>
+<script src="{{ static_url("bootstrapjs/bootstrap-select.min.js") }}"></script>
+<script src="{{ static_url("bootstrapjs/calculos.js") }}"></script>
+
+{% end %}

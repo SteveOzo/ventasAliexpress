@@ -8,8 +8,10 @@
     <title>{{ escape(handler.settings["page_title"]) }}</title>
     <link href="{{ static_url("bootstrap/bootstrap.min.css") }}" rel="stylesheet"/>
     <link href="{{ static_url("bootstrap/bootstrap-theme.css") }}" rel="stylesheet"/>
+    <link href="{{ static_url("bootstrap/bootstrap-select.min.css") }}" rel="stylesheet"/>
     <link href="{{ static_url("fonts/OleoScript-Regular.ttf") }}" rel="stylesheet"/>
     <link href="{{ static_url("estilos.css") }}" rel="stylesheet" type="text/css">
+
     {% block head %}{% end %}
   </head>
   <body>
@@ -20,7 +22,7 @@
       <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-targer="#navbar-1" name="button">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-1" name="button">
                 <span class="sr-only">menu</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -31,7 +33,7 @@
 
           </div>
 
-          <div class="collapse navbar-collapse" id="navbar-1">
+          <div class="navbar-collapse collapse" id="navbar-1">
             <ul class="nav navbar-nav">
               <li><a href="/main/ventas">Ventas</a></li>
               <li><a href="/main/clientes">Clientes</a></li>
@@ -56,6 +58,10 @@
 
     </div>
     {% end %}
+
   {% block body %}{% end %}
   </body>
+
+
+{% block bottom %}{% end %}
 </html>
