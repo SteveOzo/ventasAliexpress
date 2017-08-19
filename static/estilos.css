@@ -51,7 +51,7 @@ fieldset {
   margin-top: 40px;
 }
 
-h2,h3,h4,td,th {
+h2,h3,h4,td,th,.texto {
   color: white;
   text-align: center;
   font-family: fuentechida;
@@ -70,6 +70,10 @@ h2,h3,h4,td,th {
   border-width: 6px;
 }
 
+.derecha {
+    float: right;
+}
+
 .Input:hover {
   transition: .8s;
   background-color: rgba(55, 71, 79, 0.5);
@@ -81,6 +85,30 @@ h2,h3,h4,td,th {
   transition: .8s;
   border-bottom-color: red;
 }
+
+.desplazable {
+    background-color: rgba(0,0,0,0.5);
+    border: 1px solid red;
+    border-radius: 8px 8px 8px 8px;
+    float: left;
+    position: fixed;
+    text-align: center;
+    width: 13%;
+    box-shadow: 0px 0px 40px rgba(213,0,0 ,1),0px 0px 80px rgba(256,256,256 ,1);
+
+}
+
+img{
+                width:75%;
+                height:auto;
+                display: block;
+                margin:0 auto;
+                border:5px solid #222;
+}
+
+
+
+input[type="text"]:read-only{background-color:black;}
 
 @media screen and (max-width: 750px) {
     .formulario {

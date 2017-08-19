@@ -9,7 +9,7 @@
   <div class="container formulario">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-4">
-          <img src="{{ static_url("imagenes/spoofcorp.png") }}" class="logo center-block">
+          <img src="{{ static_url("imagenes/spoofcorp.png") }}" class="logo mx-auto">
         </div>
       </div>
 
@@ -43,6 +43,7 @@
             <div class="form-group">
               {% module xsrf_form_html() %}
               <button type="submit" class="btn btn-primary center-block"> Ingresar </button>
+
             </div>
           </form>
 

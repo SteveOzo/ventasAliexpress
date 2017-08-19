@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+
+<form action="/main" method="POST">
+  <div class="container nuevo">
+
+<div class="espaciado">
+</div>
+
+<fieldset class="col-xs-10 col-xs-offset-1 borde">
+  <legend class="hidden-xs"><h3>Registro Guardado Con Exito</h3></legend>
+
+  <div class="espaciado">
+  </div>
+
+    <legend class="hidden-xs"><h3>Valor a Pagar: $ {{ totalFinal }} </h3></legend>
+    <legend class="hidden-xs"><h3>Pago Maximo Hasta: {{ fechapagar }} </h3></legend>
+    <legend class="hidden-xs"><h3>Llegada Estimada: {{ fechallegada }} </h3></legend>
+      {% module xsrf_form_html() %}
+    <button type="submit" class="btn btn-primary center-block"> Aceptar </button>
+
+</fieldset>
+</div>
+
+</form>
+
+{% end %}

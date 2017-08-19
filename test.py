@@ -8,6 +8,12 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 from tornado.options import define, options
+from time import gmtime, strftime
+import time
+import base64
+import calendar
+import datetime
+
 
 define("port", default=8888, help="run on the given port", type=int)
 define("mysql_host", default="127.0.0.1:3306", help="database host")
@@ -64,6 +70,7 @@ class HomeHandler(BaseHandler):
     def post(self):
         user = self.db.get("SELECT * FROM Usuarios WHERE Usuario = %s",
                              self.get_argument("usuario"))
+        #print (self.get_arguments("usuario"))
         if not user:
             self.render("index.html", error="user not found", menu=None)
             return
@@ -80,6 +87,10 @@ class MainHandler(BaseHandler):
         productos=self.db.query("SELECT * FROM Productos")
         self.render("main.html", menu=True, productos=productos)
 
+    @tornado.web.authenticated
+    def post(self):
+        productos=self.db.query("SELECT * FROM Productos")
+        self.render("main.html", menu=True, productos=productos)
 
 class VentasHandler(BaseHandler):
     @tornado.web.authenticated
@@ -125,7 +136,71 @@ class NewClientHandler(BaseHandler):
 class NewSellHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.render("nuevaventa.html", menu=True)
+        clientes=self.db.query("SELECT * FROM Clientes")
+        tasaOriginal=self.db.query("SELECT TasaSteve FROM Productos")
+        tasaFiltrada= []
+        for i in tasaOriginal:
+            if i not in tasaFiltrada:
+                tasaFiltrada.append(i)
+        #imagen = self.db.query("SELECT Imagen, idProductos FROM Productos WHERE idProductos=6")
+        #print imagen[0]["Imagen"]
+        #file = open('Failed.png', 'w')
+        #file.write(base64.b64decode(imagen[0]["Imagen"]))
+        #file.close()
+        #print "grabado"
+        self.render("nuevaventa.html", menu=True, clientes=clientes, tasas=tasaFiltrada)
+
+    @tornado.web.authenticated
+    def post(self):
+        estado = "Procesando"
+        imagenes = self.get_arguments("cod64")
+        fecha = strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        cliente = self.get_body_argument("selector")
+        tasa = self.get_body_argument("tasa")
+        idCliente = self.db.query("SELECT idCliente FROM Clientes WHERE Nombre = %s", cliente)
+        idCliente = idCliente[0]["idCliente"]
+        descripciones=self.get_arguments("descripcion")
+        enlaces=self.get_arguments("enlace")
+        precios=self.get_arguments("precioali")
+        preciosfinales=self.get_body_arguments("preciofinal")
+        totalAli = 0
+        totalFinal = 0
+        for i in range(len(precios)):
+            totalAli = totalAli + float(precios[i])
+            totalFinal = totalFinal + float(preciosfinales[i])
+
+        self.db.execute(
+                        "INSERT INTO Ventas (FechaVenta, CostoPagarAli, ValorVenta, clientes_idcliente) VALUES (%s,%s,%s, %s)",
+                        fecha, totalAli, totalFinal, idCliente)
+
+        idVenta=self.db.query("SELECT idVentas FROM Ventas order by idVentas desc limit 1")
+        idVenta = idVenta[0]["idVentas"]
+
+        for i in range(len(precios)):
+            self.db.execute(
+                            "INSERT INTO Productos (Descripcion, PrecioAliexpress, PrecioVenta, TasaSteve, Enlace, EstadoActual, clientes_idcliente, ventas_idventas, Imagen) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                            descripciones[i], precios[i], preciosfinales[i], tasa, enlaces[i], estado, idCliente, idVenta, imagenes[i])
+
+
+        now = datetime.datetime.now()
+        fecha = strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        mesactual = now.month
+        yearpagar = now.year
+        mespagar = mesactual + 1
+
+        if mespagar == 13:
+            mespagar = 1
+            yearpagar = yearpagar + 1
+
+        mesllegada = calendar.month_name[mespagar+1]
+        mespagar = calendar.month_name[mespagar]
+
+
+        fechapagar= str(yearpagar)+"-"+mespagar+"-"+str(15)
+        fechallegada = str(yearpagar)+"-"+mesllegada
+
+        self.render("finalventa.html", menu=True, totalFinal=totalFinal, fechapagar=fechapagar, fechallegada=fechallegada)
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
